@@ -1,6 +1,11 @@
-## CS 61A: Structure and Interpretation of Computer Programs
+# Course Info
+University of California, Berkeley
 
-Course Website: https://inst.eecs.berkeley.edu/~cs61a/su20/
+CS 61A: Structure and Interpretation of Computer Programs
+
+https://inst.eecs.berkeley.edu/~cs61a/su20/
+
 Instructors: Chae Park, Kavi Gupta, Ryan Moughan
 
+# Note
 
