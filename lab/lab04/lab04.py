@@ -6,12 +6,17 @@ def reverse_iter(lst):
 
     >>> reverse_iter([1, 2, 3, 4])
     [4, 3, 2, 1]
+    >>> reverse_iter([1, 2, 3, 4, 5])
+    [5, 4, 3, 2, 1]
     >>> import inspect, re
     >>> cleaned = re.sub(r"#.*\\n", '', re.sub(r'"{3}[\s\S]*?"{3}', '', inspect.getsource(reverse_iter)))
     >>> print("Do not use lst[::-1], lst.reverse(), or reversed(lst)!") if any([r in cleaned for r in ["[::", ".reverse", "reversed"]]) else None
     """
-    "*** YOUR CODE HERE ***"
-
+    i ,l = 0 , len(lst)
+    while i < (l//2) :
+        lst[i], lst[l-i-1] = lst[l-i-1] , lst[i]
+        i += 1
+    return lst
 
 def reverse_recursive(lst):
     """Returns the reverse of the given list.
@@ -22,9 +27,12 @@ def reverse_recursive(lst):
     >>> cleaned = re.sub(r"#.*\\n", '', re.sub(r'"{3}[\s\S]*?"{3}', '', inspect.getsource(reverse_recursive)))
     >>> print("Do not use lst[::-1], lst.reverse(), or reversed(lst)!") if any([r in cleaned for r in ["[::", ".reverse", "reversed"]]) else None
     """
-    "*** YOUR CODE HERE ***"
+    if len(lst) == 0 : 
+        return lst[0:1]
+    return reverse_recursive(lst[1:]) + lst[0:1]
 
 
+from audioop import add
 from math import sqrt
 def distance(city_a, city_b):
     """
@@ -37,7 +45,10 @@ def distance(city_a, city_b):
     >>> distance(city_c, city_d)
     5.0
     """
-    "*** YOUR CODE HERE ***"
+    deltax = (get_lat(city_a) - get_lat(city_b))**2
+    deltay  = (get_lon(city_a) - get_lon(city_b))**2    
+    return sqrt(deltax + deltay)
+    
 
 def closer_city(lat, lon, city_a, city_b):
     """
@@ -53,7 +64,11 @@ def closer_city(lat, lon, city_a, city_b):
     >>> closer_city(41.29, 174.78, bucharest, vienna)
     'Bucharest'
     """
-    "*** YOUR CODE HERE ***"
+    city = make_city('wow',lat,lon)
+    if distance(city,city_a) - distance(city,city_b) > 0:
+        return get_name(city_b)
+    else:
+        return get_name(city_a)
 
 def check_abstraction():
     """
@@ -161,5 +176,12 @@ def add_chars(w1, w2):
     ...       ['For', 'While', 'Set', 'SetComp']) # Must use recursion
     True
     """
-    "*** YOUR CODE HERE ***"
+    if w1[0] != w2[0]:
+        return w2[0:1] + add_chars(w1,w2[1:])
+    elif len(w1) == 1:
+        return w2[1:]
+    else : 
+        return add_chars(w1[1:],w2[1:])
+    
+    
 
