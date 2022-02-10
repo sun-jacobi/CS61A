@@ -6,8 +6,7 @@ def coords(fn, seq, lower, upper):
     [[-2, 4], [1, 1], [3, 9]]
     """
     "*** YOUR CODE HERE ***"
-    return ______
-
+    return [[x,fn(x)] for x in seq if fn(x) >= lower and fn(x) <= upper]
 
 def riffle(deck):
     """Produces a single, perfect riffle shuffle of DECK, consisting of
@@ -19,7 +18,7 @@ def riffle(deck):
     [0, 10, 1, 11, 2, 12, 3, 13, 4, 14, 5, 15, 6, 16, 7, 17, 8, 18, 9, 19]
     """
     "*** YOUR CODE HERE ***"
-    return _______
+    return [deck[(len(deck)//2)*(k%2)+(k//2)]    for k in range(len(deck))]
 
 
 def berry_finder(t):
@@ -39,7 +38,16 @@ def berry_finder(t):
     >>> berry_finder(t)
     True
     """
-    "*** YOUR CODE HERE ***"
+    if label(t) == 'berry':
+        return True
+    for branch in branches(t):
+        if berry_finder(branch):
+            return True
+    return False
+
+        
+          
+          
 
 
 def sprout_leaves(t, leaves):
@@ -75,7 +83,12 @@ def sprout_leaves(t, leaves):
           1
           2
     """
-    "*** YOUR CODE HERE ***"
+    newleaves = [tree(a) for a in leaves]
+    if is_leaf(t): 
+        return tree(label(t),newleaves)
+    else : 
+        new = [sprout_leaves(b,leaves) for b in branches(t)]
+        return tree(label(t),new)
 
 # Abstraction tests for sprout_leaves and berry_finder
 def check_abstraction():
@@ -161,7 +174,17 @@ def add_trees(t1, t2):
         5
       5
     """
-    "*** YOUR CODE HERE ***"
+    if len(branches(t1)) == len(branches(t2)): 
+        return tree(label(t1) + label(t2),[add_trees(a,b) for(a,b)in zip(branches(t1),branches(t2))]) 
+    elif len(branches(t1)) >  len(branches(t2)) : 
+        new = [add_trees(a,b) for(a,b)in zip(branches(t1),branches(t2))] + branches(t1)[len(branches(t2)):]
+        return tree(label(t1) + label(t2),new)
+    else : 
+        new = [add_trees(a,b) for(a,b)in zip(branches(t1),branches(t2))] + branches(t2)[len(branches(t1)):]
+        return tree(label(t1) + label(t2),new)
+
+    
+        
 
 
 def build_successors_table(tokens):
@@ -182,8 +205,9 @@ def build_successors_table(tokens):
     prev = '.'
     for word in tokens:
         if prev not in table:
-            "*** YOUR CODE HERE ***"
-        "*** YOUR CODE HERE ***"
+            table[prev] = [word]
+        else:
+            table[prev] += [word]
         prev = word
     return table
 
@@ -198,9 +222,10 @@ def construct_sent(word, table):
     'Sentences are cool.'
     """
     import random
-    result = ''
+    result = ''  
     while word not in ['.', '!', '?']:
-        "*** YOUR CODE HERE ***"
+        result += word + ' '
+        word =  random.choice(table[word])       
     return result.strip() + word
 
 def shakespeare_tokens(path='shakespeare.txt', url='http://composingprograms.com/shakespeare.txt'):
