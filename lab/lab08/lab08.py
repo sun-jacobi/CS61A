@@ -32,5 +32,16 @@ def make_generators_generator(g):
     6
     9
     """
-    "*** YOUR CODE HERE ***"
+    l = len(list(g()))
+    def subgen(i):
+        it = g()
+        for a in range(i+1):
+            yield next(it)
+    for i in range(l):
+        yield subgen(i)
+        
+
+            
+            
+
 
