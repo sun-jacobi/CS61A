@@ -1,4 +1,8 @@
 
+from sre_constants import BRANCH
+from turtle import right
+
+
 passphrase = '*** PASSPHRASE HERE ***'
 
 
@@ -49,7 +53,39 @@ class VendingMachine:
     >>> w.vend()
     'Here is your soda.'
     """
-    "*** YOUR CODE HERE ***"
+    def __init__ (self,goods,price):
+        self.goods = goods
+        self.price = price
+        self.stock = 0
+        self.balance = 0
+        
+    def restock(self,amount):
+        self.stock += amount
+        return 'Current {0} stock: {1}'.format(self.goods,self.stock)
+    
+    def add_funds(self,fund):
+        if self.stock == 0:
+            return 'Inventory empty. Restocking required. Here is your ${0}.'.format(fund)
+        else:
+            self.balance += fund
+            return 'Current balance: ${0}'.format(self.balance)
+        
+    def vend(self):
+        
+        if self.stock == 0:
+            return 'Inventory empty. Restocking required.'
+        elif self.balance < self.price : 
+            return 'You must add ${} more funds.'.format(self.price - self.balance)
+        elif self.balance == self.price : 
+            self.stock -= 1
+            return 'Here is your {}.'.format(self.goods)    
+        else :
+            self.stock -= 1
+            change = self.balance - self.price
+            self.balance = 0
+            return 'Here is your candy and ${} change.'.format(change)
+                
+         
 
 
 class Mint:
@@ -87,17 +123,20 @@ class Mint:
         self.update()
 
     def create(self, kind):
-        "*** YOUR CODE HERE ***"
-
+        return kind(self.year)
+        
     def update(self):
-        "*** YOUR CODE HERE ***"
+        self.year = Mint.current_year
 
 class Coin:
     def __init__(self, year):
         self.year = year
 
     def worth(self):
-        "*** YOUR CODE HERE ***"
+        if Mint.current_year - self.year >= 50 :
+            return Mint.current_year - self.year - 50 + self.cents
+        else :
+            return self.cents
 
 class Nickel(Coin):
     cents = 5
@@ -131,8 +170,35 @@ def is_bst(t):
     >>> is_bst(t7)
     False
     """
-    "*** YOUR CODE HERE ***"
+    if t.is_leaf():
+        return True
+    elif len(t.branches) == 1:
+        return is_bst(t.branches[0])
+    else:
+        left = t.branches[0]
+        right =  t.branches[1]
+        if is_bst(left) and is_bst(right):
+            return bst_min(left) <= t.label and bst_max(right) > t.label 
+        else:
+            return False    
+    
+def bst_min(t):
+    if t.is_leaf():
+        return t.label
+    else:
+        return bst_min(t.branches[0])
 
+def bst_max(t):
+    if t.is_leaf():
+        return t.label
+    elif len(t.branches) == 1 :
+        return bst_max(t.branches[0])   
+    else:
+        return bst_max(t.branches[1])
+
+    
+    
+    
 
 def store_digits(n):
     """Stores the digits of a positive number n in a linked list.
@@ -149,7 +215,14 @@ def store_digits(n):
     >>> cleaned = re.sub(r"#.*\\n", '', re.sub(r'"{3}[\s\S]*?"{3}', '', inspect.getsource(store_digits)))
     >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
     """
-    "*** YOUR CODE HERE ***"
+    if n // 10 == 0 :
+        return Link(n)
+    dg = 0
+    t =  n 
+    while t > 0 :
+        dg += 1 
+        t = t // 10
+    return Link(n//(10**(dg-1)),store_digits(n%(10**(dg-1))))
 
 
 def path_yielder(t, value):
@@ -186,13 +259,13 @@ def path_yielder(t, value):
     >>> sorted(list(path_to_2))
     [[0, 2], [0, 2, 1, 2]]
     """
+    if t.label == value:
+        yield [value]
 
-    "*** YOUR CODE HERE ***"
-
-    for _______________ in _________________:
-        for _______________ in _________________:
-
-            "*** YOUR CODE HERE ***"
+    for b in t.branches:
+        for sub_path in path_yielder(b,value):
+            yield [t.label] + sub_path
+       
 
 
 def remove_all(link , value):
