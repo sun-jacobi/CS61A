@@ -7,5 +7,9 @@ https://inst.eecs.berkeley.edu/~cs61a/su20/
 
 Instructors: Chae Park, Kavi Gupta, Ryan Moughan
 
-# Note
+## Project 
 
+- [x] hog
+- [x] cats
+- [x] ants
+- [ ] scheme

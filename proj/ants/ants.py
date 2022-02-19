@@ -532,8 +532,8 @@ class Bee(Insect):
         """
         destination = self.place.exit
         # Extra credit: Special handling for bee direction
-        # BEGIN EC
-        "*** YOUR CODE HERE ***"
+        # BEGIN EC 
+        
         # END EC
         if self.blocked():
             self.sting(self.place.ant)
@@ -571,7 +571,10 @@ def make_scare(action, bee):
     action -- An action method of some Bee
     """
     # BEGIN Problem EC
-    "*** YOUR CODE HERE ***"
+    def scare_action(action, bee):
+        bee.direction = 
+    
+    return scare_action
     # END Problem EC
 
 def apply_status(status, bee, length):
